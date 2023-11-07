@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PCMonitor</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fbff00;
+            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .status-box {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #fbff00;
+            border-radius: 10px;
+            margin: 10px;
+            background-color: #181818; 
+            box-shadow: 0 0 10px rgb(255, 238, 0)
+        }
+
+        .icon {
+            font-size: 36px; 
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .status-container {
+            display: flex;
+            flex-direction: row; 
+        }
+
+        .icon img {
+            width: 36px;
+            height: 36px;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-container">
+        <div class="status-box" id="cpu_status">
+            <h1>CPU: <span id="cpu">0</span>%</h1>
+        </div>
+
+        <div class="status-box" id="ram_status">
+            <h1>RAM: <span id="ram">0</span> GB</h1>
+        </div>
+    </div>
+
+    <div class="status-container">
+        <div class="status-box" id="gpu_status">
+            <h1>GPU: <span id="gpu">0</span>%</h1>
+        </div>
+
+        <div class="status-box" id="temp_status">
+            <h1><span id="temp">0</span>°C</h1>
+        </div>
+    </div>
+    
+    <script>
+        function updateUsage() {
+            fetch('/usage_json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cpu').innerText = data.cpu;
+                    document.getElementById('ram').innerText = data.ram;
+                    document.getElementById('gpu').innerText = data.gpu;
+                    document.getElementById('temp').innerText = data.temperature;
+                });
+        }
+
+        setInterval(updateUsage, 1000);
+    </script>
+</body>
+</html>
